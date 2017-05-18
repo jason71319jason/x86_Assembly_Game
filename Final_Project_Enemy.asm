@@ -1,19 +1,6 @@
 TITLE Final_Project_Main           
 
-INCLUDE Irvine32.inc
-
-Coord struct
-	x dword ?
-	y dword ?
-Coord ends
-
-Enemy struct
-	co Coord <>
-	typ byte 1
-Enemy ends
-
-printEnemy proto, enemySetPtr:ptr Enemy, enemyNum:dword 
-productEnemy proto, enemySetPtr:ptr Enemy
+INCLUDE lib.inc
 
 main          EQU start@0
 
@@ -24,37 +11,60 @@ enemySet Enemy 20 dup(<>)
 
 .code
 
-printEnemy proc uses eax, edx
+main proc 
+	mov ecx, 10
+L:
+	invoke productEnemy, addr enemySet, enemyNum
+	invoke printEnemy, addr enemySet, enemyNum
+	mov eax, 100
+	call delay
+	loop L
+	call crlf
+	call waitmsg
+main endp
+
+printEnemy proc uses eax ebx ecx,
 	enemySetPtr:ptr Enemy,
-	enemyNum:dword
-	
+	num:dword
+	mov eax, 0
+	call setTextColor
 	call Clrscr
-	mov enemyNum, ecx
+	mov ecx, num
+	mov esi, enemySetPtr
 	
 printLoop:
 	
-	mov dl, (Enemy ptr [enemySetPtr]).y
-	mov dh, (Enemy ptr [enemySetPtr]).x
+	mov dl, byte ptr (Enemy ptr [esi]).co.y
+	mov dh, byte ptr (Enemy ptr [esi]).co.x
 	call Gotoxy
-	mov eax, 240
+	mov eax, 248
 	call SetTextColor
-	mov al, (Enemy ptr [enemySetPtr]).typ
+	mov al, byte ptr (Enemy ptr [esi]).typ
 	call WriteChar
-	
+	add esi, type Enemy
 	loop printLoop
+
+	ret
+	
 printEnemy endp
 
-productEnemy proc uses eax, edx
-	enemySetPtr:ptr Enemy
-	
+productEnemy proc uses eax ebx ecx,
+	enemySetPtr:ptr Enemy,
+	num:dword
+
+	mov esi, enemySetPtr
+	mov eax, num
+	mov ebx, type Enemy
+	mul ebx
+	add esi, eax
 	call Randomize
 	mov eax, 100
 	call RandomRange
-	mov (Enemy ptr [enemySetPtr]).x, eax
-	mov eax, 100
-	call RandomRange
-	mov (Enemy ptr [enemySetPtr]).y, eax
+	mov byte ptr (Enemy ptr [esi]).co.y, al
 	add enemyNum, 1
 	
+	ret
+	
 productEnemy endp
+
 END main
