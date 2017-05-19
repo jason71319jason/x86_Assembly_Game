@@ -1,6 +1,6 @@
 TITLE Final_Project_Main           
 
-INCLUDE Irvine32.inc
+INCLUDE lib.inc
 
 main          EQU start@0
 
