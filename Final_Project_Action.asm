@@ -20,7 +20,8 @@ Action PROC USES eax ebx ecx edx esi edi,
 		bulletLocationY2: PTR DWORD,
 		playerPosition3: word,
 		BulletLength3: DWORD,
-		bulletPosition2: word
+		bulletPosition2: word,
+		BulletNum2: byte
 L:
 	INVOKE Draw,
 		bulletLocationX2,
@@ -29,7 +30,8 @@ L:
 		playerY4,
 		playerPosition3,
 		BulletLength3,
-		bulletPosition2		
+		bulletPosition2,
+		BulletNum2
 		
 	mov eax, 20
 	call Delay
@@ -101,7 +103,8 @@ FIRE:
 		playerY4,
 		bulletLocationX2,
 		bulletLocationY2,
-		BulletLength3
+		BulletLength3,
+		BulletNum2
 	jmp L
 	ret
 Action endp

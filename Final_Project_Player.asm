@@ -17,7 +17,7 @@ Rbound byte 187
 Lbound byte 0
 Ubound byte 0
 Dbound byte 43
-
+BulletNum byte 3
 
 .code
 
@@ -35,7 +35,8 @@ main proc
 		ADDR BulletPositionY,
 		player,
 		lengthof BulletPositionX,
-		bullet
+		bullet,
+		BulletNum
 		
 	call WaitMsg
 
