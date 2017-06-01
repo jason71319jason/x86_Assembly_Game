@@ -1,3 +1,6 @@
+INCLUDE Irvine32.inc
+INCLUDE Player.inc
+.code
 Init PROC USES eax edx,
 		playerX2: byte,
 		playerY2: byte,
@@ -11,3 +14,4 @@ Init PROC USES eax edx,
 	call WriteChar
 	ret
 Init endp
+end

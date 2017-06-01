@@ -1,30 +1,5 @@
 INCLUDE Irvine32.inc
-Shooting proto,
-		playerX: byte,
-		playerY: byte,
-		BulletPositionX2: PTR DWORD,
-		BulletPositionY2: PTR DWORD,
-		BulletLength: DWORD
-Draw proto,
-		bulletLocationX: PTR DWORD,
-		bulletLocationY: PTR DWORD,
-		playerX3: byte,
-		playerY3: byte,
-		playerPosition2: word,
-		BulletLength2: DWORD,
-		bulletPosition: word
-Init proto,
-		playerX2: byte,
-		playerY2: byte,
-		playerPosition: word
-Action proto,
-		playerX4: byte,
-		playerY4: byte,
-		bulletLocationX2: PTR DWORD,
-		bulletLocationY2: PTR DWORD,
-		playerPosition3: word,
-		BulletLength3: DWORD,
-		bulletPosition2: word
+INCLUDE Player.inc
 main     EQU start@0
 .data
 startY byte 43

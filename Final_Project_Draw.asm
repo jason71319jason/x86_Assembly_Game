@@ -1,3 +1,6 @@
+INCLUDE Irvine32.inc
+INCLUDE Player.inc
+.code
 Draw PROC USES eax edi ecx edx esi,
 		bulletLocationX: PTR DWORD,
 		bulletLocationY: PTR DWORD,
@@ -37,3 +40,4 @@ Draw PROC USES eax edi ecx edx esi,
 BREAK1:
 	ret
 Draw endp
+end

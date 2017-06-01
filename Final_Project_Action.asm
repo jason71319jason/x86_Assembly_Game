@@ -1,3 +1,18 @@
+INCLUDE Irvine32.inc
+INCLUDE Player.inc
+.data
+player word 127
+bullet word 111
+right byte 'd'
+left byte 'a'
+up byte 'w'
+down byte 's'
+shoot byte 'k'
+Rbound byte 187
+Lbound byte 0
+Ubound byte 0
+Dbound byte 43
+.code
 Action PROC USES eax ebx ecx edx esi edi,
 		playerX4: byte,
 		playerY4: byte,
@@ -90,3 +105,4 @@ FIRE:
 	jmp L
 	ret
 Action endp
+end

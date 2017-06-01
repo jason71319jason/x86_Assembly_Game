@@ -1,3 +1,6 @@
+INCLUDE Irvine32.inc
+INCLUDE Player.inc
+.code
 Shooting PROC USES edx eax ecx edi esi,
 	playerX: byte,
 	playerY: byte,
@@ -24,3 +27,4 @@ Shooting PROC USES edx eax ecx edi esi,
 BREAK2:
 	ret	
 Shooting endp
+end
