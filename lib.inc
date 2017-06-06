@@ -1,8 +1,8 @@
 include Irvine32.inc
 
 Coordinate struct
-	x dword ?
-	y dword ?
+	x byte ?
+	y byte ?
 Coordinate ends
 
 Enemy struct
@@ -15,10 +15,14 @@ Enemy ends
 
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
 
-productEnemy proto, enemySetPtr: ptr Enemy, num:dword
-
 moveEnemy proto, enemySetPtr: ptr Enemy, num:dword
+
+threadOfEnemy proto
+
+strategyProduct proto, enemySetPtr:ptr Enemy, num:dword, start:byte
 
 deltaOfEnemy proto, delta:dword
 
-threadOfEnemy proto
+setOutputHandle proto, outputHandle:dword
+
+threadOfPrint proto
