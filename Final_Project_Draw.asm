@@ -13,7 +13,7 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		
 	mov edi, bulletLocationY
 	mov esi, bulletLocationX
-	call Clrscr
+	;call Clrscr
 	mov dh, playerY3
 	mov dl, playerX3
 	call Gotoxy
@@ -36,14 +36,33 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		cmp ebx, 4
 		jne DrawThreeBullet
 		mov dh, BYTE PTR[edi]
+		inc dh
+		mov dl, BYTE PTR[esi]
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+		mov dh, BYTE PTR[edi]
 		mov dl, BYTE PTR[esi]
 		call Gotoxy
 		mov ax, bulletPosition
 		call WriteChar
 		dec BYTE PTR[edi]
+		cmp BYTE PTR[edi], 0
+		jne Ignore
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dh
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+	Ignore:
 		inc edi
 		inc esi
 		loop BulletDrawCheck
+		jmp BREAK1
+	TooFar:
+		loop BulletDrawCheck
+		jmp BREAK1
 	DrawThreeBullet:
 		cmp ebx, 2
 		je DrawThreeBullet2
@@ -53,29 +72,66 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		mov ebx, 3
 		mov dh, BYTE PTR[edi]
 		mov dl, BYTE PTR[esi]
+		inc dh
+		inc dl
 		call Gotoxy
-		mov ax, bulletPosition
+		mov ax, ' '
 		call WriteChar
-		dec BYTE PTR[edi]
-		dec BYTE PTR[esi]
-		inc edi
-		inc esi
-		dec ebx
-		loop BulletDrawCheck
-TooFar:
-		loop BulletDrawCheck
-DrawThreeBullet2:
 		mov dh, BYTE PTR[edi]
 		mov dl, BYTE PTR[esi]
 		call Gotoxy
 		mov ax, bulletPosition
 		call WriteChar
 		dec BYTE PTR[edi]
+		dec BYTE PTR[esi]
+		cmp BYTE PTR[edi], 0
+		jne Ignore2
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dl
+		inc dh
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+	Ignore2:
 		inc edi
 		inc esi
 		dec ebx
-		loop BulletDrawCheck
-DrawThreeBullet3:
+		jmp TooFar
+	DrawThreeBullet2:
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dh
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		call Gotoxy
+		mov ax, bulletPosition
+		call WriteChar
+		dec BYTE PTR[edi]
+		cmp BYTE PTR[edi], 0
+		jne Ignore3
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dh
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+	Ignore3:
+		inc edi
+		inc esi
+		dec ebx
+		jmp TooFar
+	DrawThreeBullet3:
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dh
+		dec dl
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
 		mov dh, BYTE PTR[edi]
 		mov dl, BYTE PTR[esi]
 		call Gotoxy
@@ -83,6 +139,16 @@ DrawThreeBullet3:
 		call WriteChar
 		dec BYTE PTR[edi]
 		inc BYTE PTR[esi]
+		cmp BYTE PTR[edi], 0
+		jne Ignore4
+		mov dh, BYTE PTR[edi]
+		mov dl, BYTE PTR[esi]
+		inc dh
+		dec dl
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+	Ignore4:
 		inc edi
 		inc esi
 		dec ebx

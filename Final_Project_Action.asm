@@ -32,7 +32,6 @@ L:
 		BulletLength3,
 		bulletPosition2,
 		BulletNum2
-		
 	mov eax, 20
 	call Delay
 	call ReadKey
@@ -61,6 +60,11 @@ WRIGHT:
 	pop eax
 	jmp L
 ContinueR:
+	mov dh, playerY4
+	mov dl, playerX4
+	call Gotoxy
+	mov ax, ' '
+	call WriteChar
 	inc playerX4
 	pop eax
 	jmp L
@@ -72,6 +76,11 @@ WLEFT:
 	pop eax
 	jmp L
 ContinueL:
+	mov dh, playerY4
+	mov dl, playerX4
+	call Gotoxy
+	mov ax, ' '
+	call WriteChar
 	dec playerX4
 	pop eax
 	jmp L
@@ -83,6 +92,11 @@ WUP:
 	pop eax
 	jmp L
 ContinueU:
+	mov dh, playerY4
+	mov dl, playerX4
+	call Gotoxy
+	mov ax, ' '
+	call WriteChar
 	dec playerY4
 	pop eax
 	jmp L
@@ -94,6 +108,11 @@ WDOWN:
 	pop eax
 	jmp L
 ContinueD:
+	mov dh, playerY4
+	mov dl, playerX4
+	call Gotoxy
+	mov ax, ' '
+	call WriteChar
 	inc playerY4
 	pop eax
 	jmp L

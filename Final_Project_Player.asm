@@ -22,7 +22,6 @@ BulletNum byte 3
 .code
 
 main proc
-
 	INVOKE Init,
 		startX,
 		startY,
