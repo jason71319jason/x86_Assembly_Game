@@ -2,12 +2,12 @@ INCLUDE Irvine32.inc
 INCLUDE Player.inc
 main     EQU start@0
 .data
-startY byte 43
-startX byte 94
+startY sbyte 43
+startX sbyte 94
 player word 127
 bullet word 111
-BulletPositionY byte 10000 DUP(?)
-BulletPositionX byte 10000 DUP(?)
+BulletPositionY sbyte 10000 DUP(?)
+BulletPositionX sbyte 10000 DUP(?)
 right byte 'd'
 left byte 'a'
 up byte 'w'
@@ -25,7 +25,10 @@ main proc
 	INVOKE Init,
 		startX,
 		startY,
-		player
+		player,
+		ADDR BulletPositionX,
+		ADDR BulletPositionY,
+		lengthof BulletPositionX
 
 	INVOKE Action,
 		startX,

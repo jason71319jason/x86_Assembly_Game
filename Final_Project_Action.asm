@@ -14,8 +14,8 @@ Ubound byte 0
 Dbound byte 43
 .code
 Action PROC USES eax ebx ecx edx esi edi,
-		playerX4: byte,
-		playerY4: byte,
+		playerX4: sbyte,
+		playerY4: sbyte,
 		bulletLocationX2: PTR DWORD,
 		bulletLocationY2: PTR DWORD,
 		playerPosition3: word,

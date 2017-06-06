@@ -2,8 +2,8 @@ INCLUDE Irvine32.inc
 INCLUDE Player.inc
 .code
 Shooting PROC USES edx eax ecx edi esi,
-	playerX: byte,
-	playerY: byte,
+	playerX: sbyte,
+	playerY: sbyte,
 	BulletPositionX2: PTR DWORD,
 	BulletPositionY2: PTR DWORD,
 	BulletLength: DWORD,
@@ -36,15 +36,15 @@ NextBullet:
 	push ecx
 	mov ecx, BulletLength
 	CheckBlank:
-		cmp BYTE PTR[edi], 0
+		cmp SBYTE PTR[edi], -1
 		je PutPosition
 		inc edi
 		inc esi
 		loop CheckBlank
 		jmp BREAK2
 	PutPosition:
-		mov BYTE PTR[edi], dh
-		mov BYTE PTR[esi], dl
+		mov SBYTE PTR[edi], dh
+		mov SBYTE PTR[esi], dl
 		pop ecx
 		cmp BulletNum4, 3
 		je ThreeBulletSet
