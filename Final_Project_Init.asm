@@ -2,8 +2,8 @@ INCLUDE Irvine32.inc
 INCLUDE Player.inc
 .code
 Init PROC USES eax edx ecx,
-		playerX2: sbyte,
-		playerY2: sbyte,
+		playerX2: byte,
+		playerY2: byte,
 		playerPosition: word,
 		bulletLocationX3: PTR DWORD,
 		bulletLocationY3: PTR DWORD,
@@ -12,8 +12,8 @@ Init PROC USES eax edx ecx,
 	mov esi, bulletLocationX3
 	mov edi, bulletLocationY3
 InitBullet:
-	mov SBYTE PTR[esi], -1
-	mov SBYTE PTR[edi], -1
+	mov byte PTR[esi], 0
+	mov byte PTR[edi], 5
 	inc esi
 	inc edi
 	loop InitBullet

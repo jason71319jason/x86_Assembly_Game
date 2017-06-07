@@ -9,13 +9,13 @@ up byte 'w'
 down byte 's'
 shoot byte 'k'
 Rbound byte 187
-Lbound byte 0
-Ubound byte 0
+Lbound byte 2
+Ubound byte 7
 Dbound byte 43
 .code
 Action PROC USES eax ebx ecx edx esi edi,
-		playerX4: sbyte,
-		playerY4: sbyte,
+		playerX4: byte,
+		playerY4: byte,
 		bulletLocationX2: PTR DWORD,
 		bulletLocationY2: PTR DWORD,
 		playerPosition3: word,

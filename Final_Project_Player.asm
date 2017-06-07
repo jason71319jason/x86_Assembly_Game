@@ -2,22 +2,22 @@ INCLUDE Irvine32.inc
 INCLUDE Player.inc
 main     EQU start@0
 .data
-startY sbyte 43
-startX sbyte 94
+startY byte 43
+startX byte 94
 player word 127
 bullet word 111
-BulletPositionY sbyte 10000 DUP(?)
-BulletPositionX sbyte 10000 DUP(?)
+BulletPositionY byte 10000 DUP(?)
+BulletPositionX byte 10000 DUP(?)
 right byte 'd'
 left byte 'a'
 up byte 'w'
 down byte 's'
 shoot byte 'k'
 Rbound byte 187
-Lbound byte 0
-Ubound byte 0
+Lbound byte 2
+Ubound byte 7
 Dbound byte 43
-BulletNum byte 3
+BulletNum byte 1
 
 .code
 

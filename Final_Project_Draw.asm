@@ -1,11 +1,16 @@
 INCLUDE Irvine32.inc
 INCLUDE Player.inc
+.data
+Rbound byte 187
+Lbound byte 2
+Ubound byte 7
+Dbound byte 43
 .code
 Draw PROC USES eax edi ecx edx esi ebx,
 		bulletLocationX: PTR DWORD,
 		bulletLocationY: PTR DWORD,
-		playerX3: sbyte,
-		playerY3: sbyte,
+		playerX3: byte,
+		playerY3: byte,
 		playerPosition2: word,
 		BulletLength2: DWORD,
 		bulletPosition: word,
@@ -26,36 +31,40 @@ Draw PROC USES eax edi ecx edx esi ebx,
 	movzx ebx, BulletNum3
 	
 	BulletDrawCheck:
-		cmp SBYTE PTR[edi], -1
-		jne DrawBullet
-		inc edi
-		inc esi
-		loop BulletDrawCheck
-		jmp BREAK1
-	DrawBullet:
-		cmp ebx, 4
-		jne DrawThreeBullet
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
-		inc dh
-		call Gotoxy
-		mov ax, ' '
-		call WriteChar
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
-		call Gotoxy
-		mov ax, bulletPosition
-		call WriteChar
-		dec SBYTE PTR[edi]
-		cmp SBYTE PTR[edi], -1
-		jne Ignore
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
-		inc dh
-		call Gotoxy
-		mov ax, ' '
-		call WriteChar
-	Ignore:
+		cmp BYTE PTR[edi], 5
+		ja DrawBullet
+		;cmp byte PTR[esi], 0
+		;je NoLast
+		;mov dh, byte PTR[edi]
+		;mov dl, byte PTR[esi]
+		;cmp ebx, 4
+		;je NotThree
+		;cmp ebx, 3
+		;jne NextCheck
+		;inc dh
+		;inc dl
+		;dec ebx
+		;jmp ContinueDraw
+	;NextCheck:
+		;cmp ebx, 2
+		;jne NextCheck2
+		;inc dh
+		;dec ebx
+		;jmp ContinueDraw
+	;NextCheck2:
+		;inc dh
+		;dec dl
+		;dec ebx
+		;mov ebx, 3
+		;jmp ContinueDraw
+	;NotThree:
+		;inc dh
+	;ContinueDraw:
+		;call Gotoxy
+		;mov ax, ' '
+		;call WriteChar
+		;mov byte PTR[esi], 0
+	;NoLast:
 		inc edi
 		inc esi
 		loop BulletDrawCheck
@@ -63,6 +72,48 @@ Draw PROC USES eax edi ecx edx esi ebx,
 	TooFar:
 		loop BulletDrawCheck
 		jmp BREAK1
+	DrawBullet:
+		cmp ebx, 4
+		jne DrawThreeBullet
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		inc dh
+		call Gotoxy
+		.if dl!=playerX3||dh!=playerY3
+		mov ax, ' '
+		call WriteChar
+		.endif
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		cmp dl, Rbound
+		jna Print
+	NotPrint:
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+		dec byte PTR[edi]
+		jmp Ignore
+	Print:
+		cmp dl, Lbound
+		jb NotPrint
+		call Gotoxy
+		mov ax, bulletPosition
+		call WriteChar
+		dec byte PTR[edi]
+		cmp byte PTR[edi], 5
+		jne Ignore
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		inc dh
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+	Ignore:
+		inc edi
+		inc esi
+		jmp TooFar
 	DrawThreeBullet:
 		cmp ebx, 2
 		je DrawThreeBullet2
@@ -70,24 +121,40 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		je DrawThreeBullet3
 		cmp ebx, 0
 		mov ebx, 3
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dh
 		inc dl
 		call Gotoxy
+		.if dl!=playerX3||dh!=playerY3
 		mov ax, ' '
 		call WriteChar
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		.endif
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		cmp dl, Rbound
+		jna Print2
+	NotPrint2:
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+		dec byte PTR[edi]
+		dec byte PTR[esi]
+		jmp Ignore2
+	Print2:
+		cmp dl, Lbound
+		jb NotPrint2
 		call Gotoxy
 		mov ax, bulletPosition
 		call WriteChar
-		dec SBYTE PTR[edi]
-		dec SBYTE PTR[esi]
-		cmp SBYTE PTR[edi], -1
+		dec byte PTR[edi]
+		dec byte PTR[esi]
+		cmp byte PTR[edi], 5
 		jne Ignore2
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dl
 		inc dh
 		call Gotoxy
@@ -99,22 +166,37 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		dec ebx
 		jmp TooFar
 	DrawThreeBullet2:
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dh
+		call Gotoxy
+		.if dl!=playerX3||dh!=playerY3
+		mov ax, ' '
+		call WriteChar
+		.endif
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		cmp dl, Rbound
+		jna Print3
+	NotPrint3:
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		call Gotoxy
 		mov ax, ' '
 		call WriteChar
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		dec byte PTR[edi]
+		jmp Ignore3
+	Print3:
+		cmp dl, Lbound
+		jb NotPrint3
 		call Gotoxy
 		mov ax, bulletPosition
 		call WriteChar
-		dec SBYTE PTR[edi]
-		cmp SBYTE PTR[edi], -1
+		dec byte PTR[edi]
+		cmp byte PTR[edi], 5
 		jne Ignore3
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dh
 		call Gotoxy
 		mov ax, ' '
@@ -125,24 +207,40 @@ Draw PROC USES eax edi ecx edx esi ebx,
 		dec ebx
 		jmp TooFar
 	DrawThreeBullet3:
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dh
 		dec dl
 		call Gotoxy
+		.if dl!=playerX3||dh!=playerY3
 		mov ax, ' '
 		call WriteChar
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		.endif
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		cmp dl, Rbound
+		jna Print4
+	NotPrint4:
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
+		call Gotoxy
+		mov ax, ' '
+		call WriteChar
+		dec byte PTR[edi]
+		inc byte PTR[esi]
+		jmp Ignore4
+	Print4:
+		cmp dl, Lbound
+		jb NotPrint4
 		call Gotoxy
 		mov ax, bulletPosition
 		call WriteChar
-		dec SBYTE PTR[edi]
-		inc SBYTE PTR[esi]
-		cmp SBYTE PTR[edi], -1
+		dec byte PTR[edi]
+		inc byte PTR[esi]
+		cmp byte PTR[edi], 5
 		jne Ignore4
-		mov dh, SBYTE PTR[edi]
-		mov dl, SBYTE PTR[esi]
+		mov dh, byte PTR[edi]
+		mov dl, byte PTR[esi]
 		inc dh
 		dec dl
 		call Gotoxy
