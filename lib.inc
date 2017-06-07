@@ -1,5 +1,9 @@
 include Irvine32.inc
 
+ExitState	EQU 0
+StartState 	EQU 1
+RuleState	EQU 2
+GameState	EQU 3
 
 Coordinate struct
 	x dword ?
@@ -28,5 +32,12 @@ deltaOfEnemy proto, delta:dword
 
 setOutputHandle proto, outputHandle:dword
 
-threadOfPrint proto
+threadOfStart proto
 
+threadOfRule proto
+
+setState proto, newState:byte
+
+getState proto
+
+gameStateManage proto

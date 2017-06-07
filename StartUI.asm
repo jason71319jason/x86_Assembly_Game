@@ -52,7 +52,7 @@ INCLUDE VirtualKeys.inc
 				
 .code
     
-threadOfPrint proc uses eax ebx ecx edx esi,
+threadOfStart proc uses ebx ecx edx esi,
 	
 	push ebp
 	mov ebp, esp
@@ -106,9 +106,10 @@ POST:
 exitLabel:
 	mov esp, ebp
 	pop ebp
+	mov ax, choosenMarkPos.y
 	ret
 	
-threadOfPrint endp
+threadOfStart endp
 
 print proc uses eax ebx ecx edx esi,
 	newCoord:coord,
