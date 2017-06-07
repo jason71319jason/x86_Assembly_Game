@@ -50,7 +50,6 @@ if errorlevel 1 goto terminate
 REM Display all files related to this program:
 DIR Main.*
 
-pause
 Main.exe
 :terminate
 pause

@@ -9,7 +9,6 @@ Coordinate ends
 
 Enemy struct
 	co Coordinate <?,?>
-	typ byte 10
 	typ byte 65
 	sped byte ?
 	damg byte ?
@@ -18,8 +17,6 @@ Enemy struct
 Enemy ends
 
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
-
-productEnemy proto enemySetPtr: ptr Enemy
 
 moveEnemy proto, enemySetPtr: ptr Enemy, num:dword
 
