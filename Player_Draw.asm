@@ -16,22 +16,22 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 	mov ax, playerIcon
 	call WriteChar
 	mov ecx, BulletSize
-	mov ebx, 4
+	mov ebx, bulletStat1
 	cmp num, 3
 	jne BulletDrawCheck
 	movzx ebx, num
 	
 	BulletDrawCheck:
-		cmp byte ptr (Bullet ptr [esi]).co.y, 5
+		cmp byte ptr (Bullet ptr [esi]).co.y, UBound
 		ja DrawBullet
-		add setPtr, type Bullet
+		add esi, type Bullet
 		loop BulletDrawCheck
 		jmp BREAK1
 	TooFar:
 		loop BulletDrawCheck
 		jmp BREAK1
 	DrawBullet:
-		cmp ebx, 4
+		cmp ebx, bulletStat1
 		jne DrawThreeBullet
 		mov dh, byte ptr (Bullet ptr [esi]).co.y
 		mov dl, byte ptr (Bullet ptr [esi]).co.x
@@ -69,15 +69,13 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		mov ax, ' '
 		call WriteChar
 	Ignore:
-		inc edi
-		inc esi
+		add esi, type Bullet
 		jmp TooFar
 	DrawThreeBullet:
 		cmp ebx, 2
 		je DrawThreeBullet2
 		cmp ebx, 1
 		je DrawThreeBullet3
-		cmp ebx, 0
 		mov ebx, 3
 		mov dh, byte ptr (Bullet ptr [esi]).co.y
 		mov dl, byte ptr (Bullet ptr [esi]).co.x
@@ -109,7 +107,7 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		call WriteChar
 		dec byte ptr (Bullet ptr [esi]).co.y
 		dec byte ptr (Bullet ptr [esi]).co.x
-		cmp byte ptr (Bullet ptr [esi]).co.y, 5
+		cmp byte ptr (Bullet ptr [esi]).co.y, UBound
 		jne Ignore2
 		mov dh, byte ptr (Bullet ptr [esi]).co.y
 		mov dl, byte ptr (Bullet ptr [esi]).co.x
@@ -119,8 +117,7 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		mov ax, ' '
 		call WriteChar
 	Ignore2:
-		inc edi
-		inc esi
+		add esi, type Bullet
 		dec ebx
 		jmp TooFar
 	DrawThreeBullet2:
@@ -160,8 +157,7 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		mov ax, ' '
 		call WriteChar
 	Ignore3:
-		inc edi
-		inc esi
+		add esi, type Bullet
 		dec ebx
 		jmp TooFar
 	DrawThreeBullet3:
@@ -205,7 +201,7 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		mov ax, ' '
 		call WriteChar
 	Ignore4:
-		inc esi
+		add esi, type Bullet
 		dec ebx
 		jmp TooFar
 BREAK1:

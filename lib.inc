@@ -9,12 +9,13 @@ left 		EQU 'a'
 up 			EQU 'w'
 down 		EQU 's'
 shoot 		EQU 'k'
-Rbound 		EQU 187
+Rbound 		EQU 76
 Lbound 		EQU 2
-Ubound 		EQU 7
-Dbound 		EQU 43
+Ubound 		EQU 5
+Dbound 		EQU 33
 playerIcon 	EQU 127
 bulletIcon 	EQU 111
+bulletStat1 EQU 4 
 
 Enemy struct
 	co Coord <?,?>

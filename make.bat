@@ -4,28 +4,16 @@ REM Assembles and links the 32-bit ASM program into .exe which can be used by Wi
 REM Uses MicroSoft Macro Assembler version 6.11 and 32-bit Incremental Linker version 5.10.7303
 REM Created by Huang 
 REM delete related files
-del Player.obj
-del Player_Action.obj
-del Player_Draw.obj
-del Player_Init.obj
-del Player_Shooting.obj
-del Enemy.obj
-del Enemy_Product.obj
-del Enemy_Move.obj
-del Enemy_Print.obj
-del StartUI.obj
-del RuleUI.obj
-del GameStateManager.obj
+del *.obj
 del Main.lst	
-del Main.obj
 del Main.ilk
 del Main.pdb
 del Main.exe
 
 setlocal 
-set INCLUDE=D:\tool\folder\WINdbgFolder;	REM 這裡要設成WINdbgFolder的路徑
-set LIB=D:\tool\folder\WINdbgFolder;
-set PATH=D:\tool\folder\WINdbgFolder;
+set INCLUDE=D:\assemblyLanguage\WINdbgFolder;	REM 這裡要設成WINdbgFolder的路徑
+set LIB=D:\assemblyLanguage\WINdbgFolder;
+set PATH=D:\assemblyLanguage\WINdbgFolder;
 
 REM /c          assemble without linking
 REM /coff       generate object code to be linked into flat memory model 

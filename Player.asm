@@ -5,7 +5,7 @@ INCLUDE lib.inc
 
 startPos coord <10,10>
 bulletSet Bullet 1000 DUP(<>)
-bulletNum byte 1
+bulletNum byte 3
 
 .code
 
