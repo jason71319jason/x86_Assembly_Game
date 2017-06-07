@@ -3,10 +3,9 @@ INCLUDE lib.inc
 .data
 
 enemyNum sdword 0
-enemySet Enemy 300 dup(<,,,,>)
+enemySet Enemy 100 dup(<,>)
 start byte 0
 counter dword 0
-oh dword 0
 .code	
 
 threadOfEnemy proc uses eax ebx ecx edx esi,
@@ -52,12 +51,4 @@ nonZero:
 	
 deltaOfEnemy endp
 
-setOutputHandle proc uses eax ebx ecx edx esi,
-	outputHandle:dword
-	
-	mov eax, outputHandle
-	mov oh, eax
-	
-	ret
-setOutputHandle endp
 end 

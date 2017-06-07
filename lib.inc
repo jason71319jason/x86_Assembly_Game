@@ -4,21 +4,34 @@ ExitState	EQU 0
 StartState 	EQU 1
 RuleState	EQU 2
 GameState	EQU 3
-
-Coordinate struct
-	x dword ?
-	y dword ?
-
-Coordinate ends
+right 		EQU 'd'
+left 		EQU 'a'
+up 			EQU 'w'
+down 		EQU 's'
+shoot 		EQU 'k'
+Rbound 		EQU 187
+Lbound 		EQU 2
+Ubound 		EQU 7
+Dbound 		EQU 43
+playerIcon 	EQU 127
+bulletIcon 	EQU 111
 
 Enemy struct
-	co Coordinate <?,?>
+	co Coord <?,?>
 	typ byte 65
-	sped byte ?
-	damg byte ?
-	blood byte ?
 
 Enemy ends
+
+Player struct
+	co Coord <?,?>
+	bulletType byte 1
+	blood byte 3
+	
+Player ends
+
+Bullet struct
+	co Coord <0,5>
+Bullet ends
 
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
 
@@ -36,8 +49,18 @@ threadOfStart proto
 
 threadOfRule proto
 
+threadOfPlayer proto
+
 setState proto, newState:byte
 
 getState proto
 
 gameStateManage proto
+
+playerInit proto, cord:coord
+
+playerAction proto, playerPos:coord, setPtr:ptr Bullet, BulletSize:dword, num:byte
+
+playerDraw proto, setPtr: ptr Bullet, playerPos:coord, BulletSize:dword, num:byte
+
+playerShooting proto, playerPos:coord, setPtr:ptr bullet, BulletSize:dword, num:byte

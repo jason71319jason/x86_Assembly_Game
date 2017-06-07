@@ -88,16 +88,16 @@ L:
 	call readchar
 	mov byte ptr [esp-4], al
 	cmp al, 'w'
-	je UP
+	je UPs
 	cmp al, 's'
-	je DOWN
+	je DOWNs
 	cmp al, 32
 	je exitLabel
 	jmp POST
-UP:
+UPs:
 	invoke setChoosen, 1
 	jmp POST
-DOWN:
+DOWNs:
 	invoke setChoosen, 0
 POST:
 	mov eax, 20
@@ -163,15 +163,15 @@ L2:
 	
 	mov al, direction
 	cmp al, 1
-	je up 
-down:
+	je ups 
+downs:
 	mov ax, choosenMarkPos.y
 	add ax, 4
 	cmp ax, 36
 	ja retrn
 	mov choosenMarkPos.y, ax
 	jmp retrn
-up:
+ups:
 	mov ax, choosenMarkPos.y
 	sub ax, 4
 	cmp ax, 27

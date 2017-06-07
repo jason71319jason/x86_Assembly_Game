@@ -19,7 +19,8 @@ main proc
 	invoke setConsoleScreenBufferSize, outHandle, _coord
 	invoke setConsoleWindowInfo, outHandle, 1, addr _small_rect
 	invoke setConsoleTitle, addr titleStr
-	invoke gameStateManage
+	invoke threadOfPlayer
+	;invoke gameStateManage
 	exit
 main endp
 

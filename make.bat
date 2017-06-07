@@ -4,6 +4,11 @@ REM Assembles and links the 32-bit ASM program into .exe which can be used by Wi
 REM Uses MicroSoft Macro Assembler version 6.11 and 32-bit Incremental Linker version 5.10.7303
 REM Created by Huang 
 REM delete related files
+del Player.obj
+del Player_Action.obj
+del Player_Draw.obj
+del Player_Init.obj
+del Player_Shooting.obj
 del Enemy.obj
 del Enemy_Product.obj
 del Enemy_Move.obj
@@ -29,6 +34,11 @@ REM /Fl		Generate a listing file
 ML /c /coff /Zi   GameStateManager.asm
 ML /c /coff /Zi   RuleUI.asm
 ML /c /coff /Zi   StartUI.asm
+ML /c /coff /Zi	  Player.asm
+ML /c /coff /Zi   Player_Init.asm
+ML /c /coff /Zi   Player_Action.asm
+ML /c /coff /Zi   Player_Draw.asm
+ML /c /coff /Zi   Player_Shooting.asm
 ML /c /coff /Zi   Enemy.asm
 ML /c /coff /Zi   Enemy_Move.asm
 ML /c /coff /Zi   Enemy_Product.asm
@@ -47,12 +57,12 @@ REM Kernel32.lib        library procedures to be invoked from the program
 REM irvine32.lib
 REM user32.lib
 
-LINK /INCREMENTAL:no /debug /subsystem:console /entry:start /out:Main.exe Main.obj GameStateManager.obj RuleUI.obj StartUI.obj Enemy_Move.obj Enemy_Print.obj Enemy_Product.obj Enemy.obj Kernel32.lib irvine32.lib user32.lib
+LINK /INCREMENTAL:no /debug /subsystem:console /entry:start /out:Main.exe *.obj Kernel32.lib irvine32.lib user32.lib
 if errorlevel 1 goto terminate
 
 REM Display all files related to this program:
 DIR Main.*
-
+pause
 Main.exe
 :terminate
 pause

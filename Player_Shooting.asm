@@ -1,21 +1,19 @@
-INCLUDE Irvine32.inc
-INCLUDE Player.inc
+
+INCLUDE lib.inc
 .code
-Shooting PROC USES edx eax ecx edi esi,
-	playerX: byte,
-	playerY: byte,
-	BulletPositionX2: PTR DWORD,
-	BulletPositionY2: PTR DWORD,
-	BulletLength: DWORD,
-	BulletNum4:byte
+playerShooting PROC USES edx eax ecx edi esi,
+	playerPos:coord,
+	setPtr:ptr bullet,
+	BulletSize:DWORD,
+	num:byte
 		
-	mov dh, playerY
-	mov dl, playerX
-	cmp BulletNum4, 1
+	mov dh, byte ptr playerPos.y
+	mov dl, byte ptr playerPos.x
+	cmp num, 1
 	je OneBullet
-	cmp BulletNum4, 2
+	cmp num, 2
 	je TwoBullet
-	cmp BulletNum4, 3
+	cmp num, 3
 	je ThreeBullet
 OneBullet:
 	dec dh
@@ -29,37 +27,33 @@ ThreeBullet:
 	dec dl
 	jmp Ready
 Ready:
-	mov edi, BulletPositionY2
-	mov esi, BulletPositionX2
-	movzx ecx, BulletNum4
+	mov esi, setPtr 
+	movzx ecx, num
 NextBullet:
 	push ecx
-	mov ecx, BulletLength
+	mov ecx, BulletSize
 	CheckBlank:
-		cmp byte PTR[edi], 5
+		cmp byte ptr (Bullet ptr [esi]).co.y, 5
 		je PutPosition
-		inc edi
-		inc esi
+		add esi, type Bullet
 		loop CheckBlank
 		jmp BREAK2
 	PutPosition:
-		mov byte PTR[edi], dh
-		mov byte PTR[esi], dl
+		mov byte ptr (Bullet ptr [esi]).co.y, dh
+		mov byte ptr (Bullet ptr [esi]).co.x, dl
 		pop ecx
-		cmp BulletNum4, 3
+		cmp num, 3
 		je ThreeBulletSet
 		inc dl
 		inc dl
-		mov edi, BulletPositionY2
-		mov esi, BulletPositionX2
+		mov esi, setPtr 
 		loop NextBullet
 		jmp BREAK2
 ThreeBulletSet:
 		inc dl
-		mov edi, BulletPositionY2
-		mov esi, BulletPositionX2
+		mov esi, setPtr 
 	loop NextBullet
 BREAK2:
 	ret	
-Shooting endp
+playerShooting endp
 end

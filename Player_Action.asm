@@ -1,42 +1,22 @@
-INCLUDE Irvine32.inc
-INCLUDE Player.inc
 
-right 	EQU 'd'
-left 	EQU 'a'
-up 		EQU 'w'
-down 	EQU 's'
-shoot 	EQU 'k'
-Rbound 	EQU 187
-Lbound 	EQU 2
-Ubound 	EQU 7
-Dbound 	EQU 43
-.data
-player word 127
-bullet word 111
+INCLUDE lib.inc
 
 .code
-Action PROC USES eax ebx ecx edx esi edi,
-		playerX4: byte,
-		playerY4: byte,
-		bulletLocationX2: PTR DWORD,
-		bulletLocationY2: PTR DWORD,
-		playerPosition3: word,
-		BulletLength3: DWORD,
-		bulletPosition2: word,
-		BulletNum2: byte
+playerAction PROC USES eax ebx ecx edx esi edi,
+		playerPos:coord,
+		setPtr:ptr Bullet,
+		BulletSize:DWORD,
+		num:byte
 L:
-	INVOKE Draw,
-		bulletLocationX2,
-		bulletLocationY2,
-		playerX4,
-		playerY4,
-		playerPosition3,
-		BulletLength3,
-		bulletPosition2,
-		BulletNum2
+	INVOKE playerDraw,
+		setptr,
+		playerPos,
+		BulletSize,
+		num
+		
 	mov eax, 20
 	call Delay
-	call ReadKey
+	call Readkey
 	
 	cmp al, right
 	je WRIGHT
@@ -56,77 +36,75 @@ L:
 	
 WRIGHT:
 	push eax
-	mov al, playerX4
+	mov al, byte ptr playerPos.x
 	cmp al, Rbound
 	jb	ContinueR
 	pop eax
 	jmp L
 ContinueR:
-	mov dh, playerY4
-	mov dl, playerX4
+	mov dh, byte ptr playerPos.y
+	mov dl, byte ptr playerPos.x
 	call Gotoxy
 	mov ax, ' '
 	call WriteChar
-	inc playerX4
+	inc playerPos.x
 	pop eax
 	jmp L
 WLEFT:
 	push eax
-	mov al, playerX4
+	mov al, byte ptr playerPos.x
 	cmp al, Lbound
 	ja	ContinueL
 	pop eax
 	jmp L
 ContinueL:
-	mov dh, playerY4
-	mov dl, playerX4
+	mov dh, byte ptr playerPos.y
+	mov dl, byte ptr playerPos.x
 	call Gotoxy
 	mov ax, ' '
 	call WriteChar
-	dec playerX4
+	dec playerPos.x
 	pop eax
 	jmp L
 WUP:
 	push eax
-	mov al, playerY4
+	mov al, byte ptr playerPos.y
 	cmp al, Ubound
 	ja	ContinueU
 	pop eax
 	jmp L
 ContinueU:
-	mov dh, playerY4
-	mov dl, playerX4
+	mov dh, byte ptr playerPos.y
+	mov dl, byte ptr playerPos.x
 	call Gotoxy
 	mov ax, ' '
 	call WriteChar
-	dec playerY4
+	dec playerPos.y
 	pop eax
 	jmp L
 WDOWN:
 	push eax
-	mov al, playerY4
+	mov al, byte ptr playerPos.y
 	cmp al, Dbound
 	jb	ContinueD
 	pop eax
 	jmp L
 ContinueD:
-	mov dh, playerY4
-	mov dl, playerX4
+	mov dh, byte ptr playerPos.y
+	mov dl, byte ptr playerPos.x
 	call Gotoxy
 	mov ax, ' '
 	call WriteChar
-	inc playerY4
+	inc playerPos.y
 	pop eax
 	jmp L
 FIRE:
-	INVOKE Shooting,
-		playerX4,
-		playerY4,
-		bulletLocationX2,
-		bulletLocationY2,
-		BulletLength3,
-		BulletNum2
+	INVOKE playerShooting,
+		playerPos,
+		setPtr,
+		BulletSize,
+		num
 	jmp L
 	ret
-Action endp
+playerAction endp
 end
