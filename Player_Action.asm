@@ -1,17 +1,19 @@
 INCLUDE Irvine32.inc
 INCLUDE Player.inc
+
+right 	EQU 'd'
+left 	EQU 'a'
+up 		EQU 'w'
+down 	EQU 's'
+shoot 	EQU 'k'
+Rbound 	EQU 187
+Lbound 	EQU 2
+Ubound 	EQU 7
+Dbound 	EQU 43
 .data
 player word 127
 bullet word 111
-right byte 'd'
-left byte 'a'
-up byte 'w'
-down byte 's'
-shoot byte 'k'
-Rbound byte 187
-Lbound byte 2
-Ubound byte 7
-Dbound byte 43
+
 .code
 Action PROC USES eax ebx ecx edx esi edi,
 		playerX4: byte,
