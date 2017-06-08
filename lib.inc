@@ -11,7 +11,8 @@ down 		EQU 's'
 shoot 		EQU 'k'
 Rbound 		EQU 76
 Lbound 		EQU 2
-Ubound 		EQU 5
+Ubound 		EQU 7
+BUbound     EQU 5
 Dbound 		EQU 33
 playerIcon 	EQU 127
 bulletIcon 	EQU 111
@@ -65,3 +66,7 @@ playerAction proto, playerPos:coord, setPtr:ptr Bullet, BulletSize:dword, num:by
 playerDraw proto, setPtr: ptr Bullet, playerPos:coord, BulletSize:dword, num:byte
 
 playerShooting proto, playerPos:coord, setPtr:ptr bullet, BulletSize:dword, num:byte
+
+BulletMove proto, HowToMove: DWORD, BulletPtr: ptr Bullet
+
+LastBulletPosition proto, LastBulletPositionX:byte, LastBulletPositionY:byte, BulletState:DWORD
