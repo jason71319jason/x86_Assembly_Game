@@ -5,7 +5,7 @@ INCLUDE lib.inc
 
 startPos coord <10,10>
 bulletSet Bullet 1000 DUP(<>)
-bulletNum byte 3
+bulletNum byte 1
 
 .code
 
@@ -20,7 +20,6 @@ threadOfPlayer proc
 		lengthof bulletSet,
 		bulletNum
 		
-	call WaitMsg
 	ret
 threadOfPlayer	endp
 

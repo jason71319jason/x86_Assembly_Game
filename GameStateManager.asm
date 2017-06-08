@@ -11,11 +11,12 @@ gameStateManage proc uses eax ebx ecx edx esi,
 Lstart:
 	invoke threadOfStart	
 	cmp ax, 28
-	je Lstart
+	je LGame
 	cmp ax, 36
 	je LExit
 	jmp LRule
 LGame:
+	invoke threadOfPlayer
 	jmp Post
 LRule:
 	invoke threadOfRule
