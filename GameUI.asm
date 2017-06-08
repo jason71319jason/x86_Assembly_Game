@@ -1,17 +1,19 @@
 TITLE Final_Project_Main           
+include lib.inc
 
 	heartGraphWidth		EQU 8
 	heartGraphHeihgt	EQU 4
 	screenWidth 		EQU 76
 	screenHeight 		EQU 33
+	
 .data
 	
 	heartNum	dword 3
 	boxPos 		coord <2,2>
 	heartGraphPos	coord <10,39>
-	boxTop		byte (screenWidth) dup ('_')
-	boxBody		byte '|', (screenWidth-2) dup 0, '|'
-	boxBottom	byte "|_", (screenWidth-4) dup ('_'),"_|"
+	boxTop		byte (screenWidth) dup ("_")
+	boxBody		byte "|", (screenWidth-2) dup (32), "|"
+	boxBottom	byte "|_", (screenWidth-4) dup ("_"),"_|"
 	heartGraph	byte "  _  _  ",
 					 " / \/ \ ",
 					 " \    / ",

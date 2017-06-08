@@ -11,27 +11,15 @@ del Main.pdb
 del Main.exe
 
 setlocal 
-set INCLUDE=D:\assemblyLanguage\WINdbgFolder;	REM 這裡要設成WINdbgFolder的路徑
-set LIB=D:\assemblyLanguage\WINdbgFolder;
-set PATH=D:\assemblyLanguage\WINdbgFolder;
+set INCLUDE=D:\tool\folder\WINdbgFolder\;	REM 這裡要設成WINdbgFolder的路徑
+set LIB=D:\tool\folder\WINdbgFolder\;
+set PATH=D:\tool\folder\WINdbgFolder\;
 
 REM /c          assemble without linking
 REM /coff       generate object code to be linked into flat memory model 
 REM /Zi         generate symbolic debugging information for WinDBG
 REM /Fl		Generate a listing file
-ML /c /coff /Zi   GameStateManager.asm
-ML /c /coff /Zi   RuleUI.asm
-ML /c /coff /Zi   StartUI.asm
-ML /c /coff /Zi	  Player.asm
-ML /c /coff /Zi   Player_Init.asm
-ML /c /coff /Zi   Player_Action.asm
-ML /c /coff /Zi   Player_Draw.asm
-ML /c /coff /Zi   Player_Shooting.asm
-ML /c /coff /Zi   Enemy.asm
-ML /c /coff /Zi   Enemy_Move.asm
-ML /c /coff /Zi   Enemy_Product.asm
-ML /c /coff /Zi   Enemy_Print.asm
-ML /c /coff /Zi   Main.asm
+ML /c /coff /Zi   *.asm
 if errorlevel 1 goto terminate
 
 REM /debug              generate symbolic debugging information

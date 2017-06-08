@@ -10,13 +10,8 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		
 	mov esi, setPtr
 
-	mov dh, byte ptr playerPos.y
-	mov dl, byte ptr playerPos.x
-	call Gotoxy
-	mov ax, playerIcon
-	call WriteChar
 	mov ecx, BulletSize
-	mov ebx, bulletStat1
+	mov ebx, threeBulletState
 	cmp num, 3
 	jne BulletDrawCheck
 	movzx ebx, num
@@ -31,7 +26,7 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 		loop BulletDrawCheck
 		jmp BREAK1
 	DrawBullet:
-		cmp ebx, bulletStat1
+		cmp ebx, threeBulletState
 		jne DrawThreeBullet
 		mov dh, byte ptr (Bullet ptr [esi]).co.y
 		mov dl, byte ptr (Bullet ptr [esi]).co.x
@@ -207,4 +202,8 @@ playerDraw PROC USES eax edi ecx edx esi ebx,
 BREAK1:
 	ret
 playerDraw endp
+
+bulletMove proc
+
+bulletMove endp
 end

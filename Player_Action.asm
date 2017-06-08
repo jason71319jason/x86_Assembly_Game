@@ -1,23 +1,17 @@
 
 INCLUDE lib.inc
-
+playerPrint proto, newCoord:coord, oldCoord:ptr coord
 .code
-playerAction PROC USES eax ebx ecx edx esi edi,
+playerMove PROC USES eax ebx ecx edx esi edi,
 		playerPos:coord,
-		setPtr:ptr Bullet,
-		BulletSize:DWORD,
-		num:byte
+		
+	local tmpCoord:coord
 L:
-	INVOKE playerDraw,
-		setptr,
-		playerPos,
-		BulletSize,
-		num
 		
 	mov eax, 20
 	call Delay
 	call Readkey
-	
+
 	cmp al, right
 	je WRIGHT
 	
@@ -30,81 +24,67 @@ L:
 	cmp al, down
 	je WDOWN
 	
-	cmp al, shoot
-	je FIRE
 	jmp L
 	
 WRIGHT:
-	push eax
-	mov al, byte ptr playerPos.x
-	cmp al, Rbound
-	jb	ContinueR
-	pop eax
-	jmp L
-ContinueR:
-	mov dh, byte ptr playerPos.y
-	mov dl, byte ptr playerPos.x
-	call Gotoxy
-	mov ax, ' '
-	call WriteChar
-	inc playerPos.x
-	pop eax
-	jmp L
+	mov bx, playerPos.x
+	mov dx, playerPos.y
+	inc bx
+	mov tmpCoord.x, bx
+	mov tmpCoord.y, dx
+	invoke playerPrint, tmpCoord, addr playerPos
+	jmp L 
 WLEFT:
-	push eax
-	mov al, byte ptr playerPos.x
-	cmp al, Lbound
-	ja	ContinueL
-	pop eax
-	jmp L
-ContinueL:
-	mov dh, byte ptr playerPos.y
-	mov dl, byte ptr playerPos.x
-	call Gotoxy
-	mov ax, ' '
-	call WriteChar
-	dec playerPos.x
-	pop eax
+	mov bx, playerPos.x
+	mov dx, playerPos.y
+	dec bx
+	mov tmpCoord.x, bx
+	mov tmpCoord.y, dx
+	invoke playerPrint, tmpCoord, addr playerPos
 	jmp L
 WUP:
-	push eax
-	mov al, byte ptr playerPos.y
-	cmp al, Ubound
-	ja	ContinueU
-	pop eax
-	jmp L
-ContinueU:
-	mov dh, byte ptr playerPos.y
-	mov dl, byte ptr playerPos.x
-	call Gotoxy
-	mov ax, ' '
-	call WriteChar
-	dec playerPos.y
-	pop eax
+	mov bx, playerPos.x
+	mov dx, playerPos.y
+	dec dx
+	mov tmpCoord.x, bx
+	mov tmpCoord.y, dx
+	invoke playerPrint, tmpCoord, addr playerPos
 	jmp L
 WDOWN:
-	push eax
-	mov al, byte ptr playerPos.y
-	cmp al, Dbound
-	jb	ContinueD
-	pop eax
+	mov bx, playerPos.x
+	mov dx, playerPos.y
+	inc dx
+	mov tmpCoord.x, bx
+	mov tmpCoord.y, dx
+	invoke playerPrint, tmpCoord, addr playerPos
 	jmp L
-ContinueD:
-	mov dh, byte ptr playerPos.y
-	mov dl, byte ptr playerPos.x
-	call Gotoxy
-	mov ax, ' '
-	call WriteChar
-	inc playerPos.y
-	pop eax
-	jmp L
-FIRE:
-	INVOKE playerShooting,
-		playerPos,
-		setPtr,
-		BulletSize,
-		num
 	jmp L
 	ret
-playerAction endp
+playerMove endp
+
+playerPrint proc,
+	newCoord:coord,
+	oldCoord:ptr coord
+	.IF newCoord.x > Rbound || newCoord.x < Lbound 
+	jmp exitLabel
+	.ENDIF
+	.IF newCoord.y < Ubound || newCoord.y > Dbound
+	jmp exitLabel
+	.ENDIF
+	mov esi, oldCoord
+	mov dl, byte ptr (Coord ptr [esi]).x
+	mov dh, byte ptr (Coord ptr [esi]).y
+	call gotoxy
+	mov al, 32
+	call writechar
+	mov dl, byte ptr newCoord.x
+	mov dh, byte ptr newCoord.y
+	call gotoxy
+	mov al, playerIcon
+	call writechar
+	mov byte ptr (Coord ptr [esi]).x, dl
+	mov byte ptr (Coord ptr [esi]).y, dh
+exitLabel:
+	ret
+playerPrint endp
 end

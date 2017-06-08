@@ -15,7 +15,7 @@ Ubound 		EQU 5
 Dbound 		EQU 33
 playerIcon 	EQU 127
 bulletIcon 	EQU 111
-bulletStat1 EQU 4 
+threeBulletState EQU 4 
 
 Enemy struct
 	co Coord <?,?>
@@ -60,7 +60,7 @@ gameStateManage proto
 
 playerInit proto, cord:coord
 
-playerAction proto, playerPos:coord, setPtr:ptr Bullet, BulletSize:dword, num:byte
+playerMove proto, playerPos:coord
 
 playerDraw proto, setPtr: ptr Bullet, playerPos:coord, BulletSize:dword, num:byte
 
