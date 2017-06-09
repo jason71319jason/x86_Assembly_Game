@@ -2,22 +2,28 @@ TITLE Final_Project_Main
 include lib.inc
 
 	heartGraphWidth		EQU 8
-	heartGraphHeihgt	EQU 4
+	heartGraphHeight	EQU 4
 	screenWidth 		EQU 76
-	screenHeight 		EQU 33
-	
+	screenHeight 		EQU 35
+	bloodGraphWidth		EQU 20
+	bloodGraphHeight	EQU	3
 .data
 	
 	heartNum	dword 3
 	boxPos 		coord <2,2>
-	heartGraphPos	coord <10,39>
+	heartGraphPos	coord <30,38>
+	bloodgraphPos	coord <7,39>
 	boxTop		byte (screenWidth) dup ("_")
 	boxBody		byte "|", (screenWidth-2) dup (32), "|"
 	boxBottom	byte "|_", (screenWidth-4) dup ("_"),"_|"
-	heartGraph	byte "  _  _  ",
-					 " / \/ \ ",
-					 " \    / ",
-					 "  \__/  ",0
+	heartGraph	byte"  _  _  ",
+					" / \/ \ ",
+					" \    / ",
+					"  \__/  ",0
+	bloodGraph	byte" _      _   _   _   ",
+					"|_) |  / \ / \ | \ o",
+					"|_) |_ \_/ \_/ |_/ o",0
+				
 .code
 	
 printBox proc
@@ -78,7 +84,7 @@ printHeart proc
 	call setTextColor
 L1:
 	push ecx
-	mov ecx, heartGraphHeihgt
+	mov ecx, heartGraphHeight
 L2:
 	push ecx
 	mov ecx, heartGraphWidth
@@ -102,4 +108,27 @@ L3:
 	ret
 printHeart endp
 
+printBlood proc
+	mov esi, offset bloodGraph
+	mov dl, byte ptr bloodgraphPos.x
+	mov dh, byte ptr bloodgraphPos.y
+	mov eax, 240
+	call setTextColor
+	mov ecx, bloodGraphHeight
+L1:
+	push ecx
+	mov ecx, bloodGraphWidth
+L2:
+	call gotoxy
+	mov al, byte ptr [esi]
+	call writechar
+	inc dl
+	inc esi
+	loop L2
+	inc dh
+	mov dl, byte ptr bloodgraphPos.x
+	pop ecx
+	loop L1
+	ret
+printBlood endp
 end

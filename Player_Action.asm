@@ -1,17 +1,20 @@
 
 INCLUDE lib.inc
-playerPrint proto, newCoord:coord, oldCoord:ptr coord
+playerPrint proto, newCoord:coord, oldCoord:coord
 .code
 playerMove PROC USES eax ebx ecx edx esi edi,
 		playerPos:coord,
+		setPtr:ptr Bullet,
+		BulletSize:DWORD,
+		num:byte
 		
 	local tmpCoord:coord
-L:
 		
-	mov eax, 20
-	call Delay
 	call Readkey
-
+	
+	mov bx, playerPos.x
+	mov dx, playerPos.y
+	
 	cmp al, right
 	je WRIGHT
 	
@@ -24,56 +27,59 @@ L:
 	cmp al, down
 	je WDOWN
 	
+	cmp al, shoot
+	je shooting
 	jmp L
 	
 WRIGHT:
-	mov bx, playerPos.x
-	mov dx, playerPos.y
 	inc bx
 	mov tmpCoord.x, bx
 	mov tmpCoord.y, dx
-	invoke playerPrint, tmpCoord, addr playerPos
+	invoke playerPrint, tmpCoord, playerPos
 	jmp L 
 WLEFT:
-	mov bx, playerPos.x
-	mov dx, playerPos.y
+
 	dec bx
 	mov tmpCoord.x, bx
 	mov tmpCoord.y, dx
-	invoke playerPrint, tmpCoord, addr playerPos
+	invoke playerPrint, tmpCoord, playerPos
 	jmp L
 WUP:
-	mov bx, playerPos.x
-	mov dx, playerPos.y
+
 	dec dx
 	mov tmpCoord.x, bx
 	mov tmpCoord.y, dx
-	invoke playerPrint, tmpCoord, addr playerPos
+	invoke playerPrint, tmpCoord, playerPos
 	jmp L
 WDOWN:
-	mov bx, playerPos.x
-	mov dx, playerPos.y
+
 	inc dx
 	mov tmpCoord.x, bx
 	mov tmpCoord.y, dx
-	invoke playerPrint, tmpCoord, addr playerPos
+	invoke playerPrint, tmpCoord, playerPos
 	jmp L
-	jmp L
+shooting:
+	invoke playerShooting, tmpCoord ,setPtr, BulletSize, num
+L:	
 	ret
+	
 playerMove endp
 
-playerPrint proc,
+playerPrint proc USES eax ebx ecx edx esi edi,
 	newCoord:coord,
-	oldCoord:ptr coord
-	.IF newCoord.x > Rbound || newCoord.x < Lbound 
+	oldCoord:coord
+	
+	mov ax, newCoord.x
+	mov bx, newCoord.y
+	.IF ax > Rbound || ax < Lbound 
 	jmp exitLabel
 	.ENDIF
-	.IF newCoord.y < Ubound || newCoord.y > Dbound
+	.IF bx < Ubound || bx > Dbound
 	jmp exitLabel
 	.ENDIF
-	mov esi, oldCoord
-	mov dl, byte ptr (Coord ptr [esi]).x
-	mov dh, byte ptr (Coord ptr [esi]).y
+	
+	mov dl, byte ptr oldCoord.x
+	mov dh, byte ptr oldCoord.y
 	call gotoxy
 	mov al, 32
 	call writechar
@@ -82,8 +88,8 @@ playerPrint proc,
 	call gotoxy
 	mov al, playerIcon
 	call writechar
-	mov byte ptr (Coord ptr [esi]).x, dl
-	mov byte ptr (Coord ptr [esi]).y, dh
+	invoke setPlayerPos, newCoord.x, newCoord.y
+	
 exitLabel:
 	ret
 playerPrint endp

@@ -11,9 +11,10 @@ down 		EQU 's'
 shoot 		EQU 'k'
 Rbound 		EQU 76
 Lbound 		EQU 2
-Ubound 		EQU 5
+Ubound 		EQU 7
+BUbound     EQU 5
 Dbound 		EQU 33
-playerIcon 	EQU 127
+playerIcon 	EQU 126
 bulletIcon 	EQU 111
 threeBulletState EQU 4 
 
@@ -35,8 +36,6 @@ Bullet struct
 Bullet ends
 
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
-
-moveEnemy proto, enemySetPtr: ptr Enemy, num:dword
 
 threadOfEnemy proto
 
@@ -60,8 +59,24 @@ gameStateManage proto
 
 playerInit proto, cord:coord
 
-playerMove proto, playerPos:coord
+setShootState proto,	x:byte
 
-playerDraw proto, setPtr: ptr Bullet, playerPos:coord, BulletSize:dword, num:byte
+playerMove proto, playerPos:coord, setPtr:ptr Bullet, BulletSize:DWORD, num:byte
+
+bulletPrint proto, playerPos:coord, setPtr: ptr Bullet, BulletSize:dword, num:byte
 
 playerShooting proto, playerPos:coord, setPtr:ptr bullet, BulletSize:dword, num:byte
+
+BulletMove proto, HowToMove: DWORD, BulletPtr: ptr Bullet
+
+LastBulletPosition proto, LastBulletPositionX:byte, LastBulletPositionY:byte, BulletState:DWORD
+
+printBox proto,
+
+printHeart proto,
+
+printBlood proto,
+
+gameInit proto,
+
+setPlayerPos proto, newX:word, newY:word

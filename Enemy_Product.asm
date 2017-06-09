@@ -42,7 +42,7 @@ randomType proto
 	locOffset dword 0
 .code 
 
-productEnemy proc uses ebx ecx edx esi,
+productEnemy proc uses eax ebx ecx edx esi,
 	locPtr:ptr Enemy,
 	num:dword,
 	bornLoc:byte
@@ -50,8 +50,8 @@ productEnemy proc uses ebx ecx edx esi,
 	mov esi,locPtr
 	mov byte ptr (Enemy ptr [esi]).co.x, 0
 	mov bl, bornLoc
-	add bl, 1
 	add ebx, locOffset
+	add ebx, 3
 	mov byte ptr (Enemy ptr [esi]).co.y, bl 
 	invoke deltaOfEnemy, 1
 	
@@ -97,6 +97,7 @@ productType:
 	invoke randomOffset
 	invoke randomType
 	ret
+	
 exitLabel:
 	mov typeLoc, esi
 	ret
@@ -118,16 +119,20 @@ strategyProduct proc uses eax ebx ecx edx esi,
 	ret
 strategyProduct endp
 
-randomOffset proc
+randomOffset proc uses eax ebx ecx edx esi,
+
 	call Randomize
-	mov eax, 41
+	mov eax, 6
 	call RandomRange
+	mov edx, 10
+	mul edx
 	mov locOffset, eax
-	
 	ret
+	
 randomOffset endp
 
-randomType proc 
+randomType proc uses eax ebx ecx edx esi,
+
 	call Randomize
 	mov eax, 5
 	call RandomRange
