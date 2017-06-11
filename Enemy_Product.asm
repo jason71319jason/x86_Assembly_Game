@@ -48,27 +48,32 @@ productEnemy proc uses eax ebx ecx edx esi,
 	bornLoc:byte
 	
 	mov esi,locPtr
-	mov byte ptr (Enemy ptr [esi]).co.x, 0
+	mov ecx, 1000
+findEmptyEnemy:
+	mov al ,(Enemy ptr [esi]).isExist
+	cmp al, 0
+	je product
+	add esi, type Enemy
+	loop findEmptyEnemy
+product:
+	mov byte ptr (Enemy ptr [esi]).co.y, (Ubound)
 	mov bl, bornLoc
 	add ebx, locOffset
 	add ebx, 3
-	mov byte ptr (Enemy ptr [esi]).co.y, bl 
+	mov byte ptr (Enemy ptr [esi]).co.x, bl 
+	mov byte ptr (Enemy ptr [esi]).isExist, 1 
 	invoke deltaOfEnemy, 1
 	
 	ret
 	
 productEnemy endp
 
-productEnemySet proc uses eax ebx ecx edx esi,
+productEnemySet proc uses eax ebx ecx edx edi esi,
 	enemySetPtr:ptr Enemy,
 	num:dword,
 	setPtr:ptr byte
 	
 	mov edi, enemySetPtr
-	mov eax, num
-	mov ebx, type Enemy
-	mul ebx
-	add edi, eax
 	
 	mov ecx, 0
 	mov esi, setPtr
@@ -84,7 +89,7 @@ do:
 	
 product:
 	invoke productEnemy, edi, num, cl
-	add edi, type Enemy
+
 postDo:
 
 	inc ecx
@@ -111,7 +116,7 @@ strategyProduct proc uses eax ebx ecx edx esi,
 	mov esi, enemySetPtr
 	
 	.IF start == 0
-		invoke randomOffset
+		;invoke randomOffset
 		invoke randomType
 	.ENDIF
 	

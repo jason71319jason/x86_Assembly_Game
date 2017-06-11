@@ -4,18 +4,23 @@ include lib.inc
 	heartGraphWidth		EQU 8
 	heartGraphHeight	EQU 4
 	screenWidth 		EQU 76
-	screenHeight 		EQU 35
+	screenHeight 		EQU 32
 	bloodGraphWidth		EQU 20
 	bloodGraphHeight	EQU	3
+	waveGraphWidth		EQU 20
+	waveGraphHeight	    EQU	3
+	numGraphWidth		EQU 20
+	numGraphHeight	    EQU	4
 .data
 	
 	heartNum	dword 3
-	boxPos 		coord <2,2>
+	boxPos 		coord <2,4>
 	heartGraphPos	coord <30,38>
 	bloodgraphPos	coord <7,39>
-	boxTop		byte (screenWidth) dup ("_")
+	waveGraphPos	coord <10,0>
+	boxTop		byte (screenWidth) dup ("#")
 	boxBody		byte "|", (screenWidth-2) dup (32), "|"
-	boxBottom	byte "|_", (screenWidth-4) dup ("_"),"_|"
+	boxBottom	byte "^", (screenWidth-2) dup (94),"^"
 	heartGraph	byte"  _  _  ",
 					" / \/ \ ",
 					" \    / ",
@@ -23,7 +28,45 @@ include lib.inc
 	bloodGraph	byte" _      _   _   _   ",
 					"|_) |  / \ / \ | \ o",
 					"|_) |_ \_/ \_/ |_/ o",0
-				
+	waveGraph	byte"_    __       __ _  ",
+					"|   |__ \  / |__ |  ",
+					"|__ |__  \/  |__ |__",0
+	num1Graph	byte" /| ",
+					"  | ",
+					" _|_",0
+	num2Graph	byte" __ ",
+					" __|",
+					"|__ ",0
+	num3Graph	byte" __",
+					" __|",
+					" __|",0
+	num4Graph	byte" /| ",
+					"/_|_",
+					"  | " ,0
+	num5Graph	byte" __ ",
+					"|__ ",
+					" __|",0
+	num6Graph	byte" __ ",
+					"|__ ",
+					"|__|",0
+	num7Graph	byte" __ ",
+					"|  |",
+					"   |",0
+	num8Graph	byte" __ ",
+					"|__|",
+					"|__|",0
+	num9Graph	byte" __ ",
+					"|__|",
+					" __|",0
+	num0Graph	byte" __ ",
+					"|  |",
+					"|__|",0
+	eazyGraph	byte""
+					""
+					""
+	hardGraph	byte""
+					""
+					""
 .code
 	
 printBox proc
@@ -131,4 +174,28 @@ L2:
 	loop L1
 	ret
 printBlood endp
+
+printWave proc
+	mov esi, offset waveGraph
+	mov dl, byte ptr wavegraphPos.x
+	mov dh, byte ptr wavegraphPos.y
+	mov eax, 240
+	call setTextColor
+	mov ecx, waveGraphHeight
+L1:
+	push ecx
+	mov ecx, waveGraphWidth
+L2:
+	call gotoxy
+	mov al, byte ptr [esi]
+	call writechar
+	inc dl
+	inc esi
+	loop L2
+	inc dh
+	mov dl, byte ptr wavegraphPos.x
+	pop ecx
+	loop L1
+	ret
+printWave endp
 end

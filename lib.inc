@@ -10,18 +10,17 @@ up 			EQU 'w'
 down 		EQU 's'
 shoot 		EQU 'k'
 Rbound 		EQU 76
-Lbound 		EQU 2
-Ubound 		EQU 7
-BUbound     EQU 5
-Dbound 		EQU 33
+Lbound 		EQU 3
+Ubound 		EQU 5
+Dbound 		EQU 34
 playerIcon 	EQU 126
 bulletIcon 	EQU 111
 threeBulletState EQU 4 
 
 Enemy struct
 	co Coord <?,?>
-	typ byte 65
-
+	typ byte 64
+	isExist byte 0
 Enemy ends
 
 Player struct
@@ -32,7 +31,10 @@ Player struct
 Player ends
 
 Bullet struct
-	co Coord <0,5>
+	co Coord <?,?>
+	deltaX sbyte 0
+	deltaY sbyte 0
+	isExist byte 0
 Bullet ends
 
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
@@ -41,7 +43,7 @@ threadOfEnemy proto
 
 strategyProduct proto, enemySetPtr:ptr Enemy, num:dword, start:byte
 
-deltaOfEnemy proto, delta:dword
+deltaOfEnemy proto, delta:sdword
 
 setOutputHandle proto, outputHandle:dword
 
@@ -59,15 +61,9 @@ gameStateManage proto
 
 playerInit proto, cord:coord
 
-setShootState proto,	x:byte
+setShootState proto, x:byte
 
-playerMove proto, playerPos:coord, setPtr:ptr Bullet, BulletSize:DWORD, num:byte
-
-bulletPrint proto, playerPos:coord, setPtr: ptr Bullet, BulletSize:dword, num:byte
-
-playerShooting proto, playerPos:coord, setPtr:ptr bullet, BulletSize:dword, num:byte
-
-BulletMove proto, HowToMove: DWORD, BulletPtr: ptr Bullet
+playerMove proto, playerPos:coord
 
 LastBulletPosition proto, LastBulletPositionX:byte, LastBulletPositionY:byte, BulletState:DWORD
 
@@ -79,4 +75,22 @@ printBlood proto,
 
 gameInit proto,
 
+deltaOfbulletNum proto, delta:sdword
+	
 setPlayerPos proto, newX:word, newY:word
+
+BulletProductSet proto, bulletSetPtr:ptr bullet, canonType:byte, PlayerPosi:coord
+
+BulletPrint proto, bulletSetPtr:ptr bullet, bulletNum:dword, playerPosi:coord
+
+getEnemySet proto,
+
+getEnemyNum proto,
+
+deltaOfScore proto, delta:dword
+
+getBulletSet proto
+
+getBulletNum proto
+
+printWave proto

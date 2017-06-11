@@ -4,19 +4,22 @@ INCLUDE lib.inc
 .data
 
 bulletSet Bullet 1000 DUP(<>)
-bulletCanonNum byte 1
+bulletCanonNum byte 3
+bulletNum sdword 0
 isShoot byte 0
-playerPos coord <10,10>
+playerPos coord <38,33>
+score dword 0
 
 .code
 
 threadOfPlayer proc uses eax,
 	
-	invoke setShootState, 0
-	invoke playerMove, playerPos, addr bulletSet, lengthof bulletSet, bulletCanonNum
-	cmp isShoot, 0
-	je ExitLabel
-	invoke bulletPrint, playerPos, addr bulletSet, lengthof bulletSet, bulletCanonNum
+	invoke playerMove, playerPos
+	.IF isShoot == 1
+	invoke bulletProductSet, addr bulletSet, bulletCanonNum, playerPos
+	mov isShoot, 0
+	.ENDIF
+	invoke bulletPrint, addr bulletSet, bulletNum, playerPos
 ExitLabel:
 
 	ret
@@ -51,4 +54,33 @@ setPlayerPos proc USES eax edx ecx,
 	mov playerPos.y, bx
 	ret
 setPlayerPos endp
+
+deltaOfbulletNum proc uses eax,
+	delta:sdword
+	mov eax, delta
+	add bulletNum, eax
+	cmp bulletNum, 0
+	jnl nonZero
+	mov bulletNum, 0
+
+nonZero:	
+	ret
+deltaOfbulletNum endp
+
+deltaOfScore proc uses eax,
+	delta:dword
+	mov eax, delta
+	add score, eax
+	ret
+deltaOfScore endp
+
+getBulletSet proc
+	mov esi, offset bulletSet
+	ret
+getBulletSet endp
+
+getBulletNum proc
+	mov eax, bulletNum
+	ret
+getBulletNum endp
 end

@@ -1,14 +1,16 @@
 TITLE Final_Project_Main           
 
 include lib.inc
-
+	
 .data 
 	state byte 0
-	startPos coord <10,10>
+	startPos coord <38,33>
+	counter dword 0
+
 .code
 	
 gameStateManage proc uses eax ebx ecx edx esi,
-
+	
 Lstart:
 	call Clrscr
 	invoke setState, StartState
@@ -27,9 +29,16 @@ PlayerThread:
 	invoke threadOfPlayer
 
 EnemyThread:
-	;invoke threadOfEnemy
+	cmp counter, 200
+	jne postDo
+	invoke threadOfEnemy
+postDo:
 	mov eax, 20
 	call delay
+	add counter, eax
+	.IF counter > 200
+		sub counter, 200
+	.ENDIF
 	cmp state, GameState
 	je ThreadLoop
 	
@@ -61,7 +70,9 @@ gameInit proc
 	invoke printHeart
 	invoke printBox
 	invoke printBlood
+	invoke printWave
 	invoke playerInit, startPos
 	ret
 gameInit endp
+
 end
