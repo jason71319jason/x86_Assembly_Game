@@ -5,7 +5,7 @@ enemyCollision proto, enemyLoc:ptr enemy
 .data
 
 enemyNum sdword 0
-enemySet Enemy 1000 dup(<,>)
+enemySet Enemy 1500 dup(<,>)
 start byte 0
 
 .code	
@@ -21,7 +21,7 @@ threadOfEnemy proc uses eax ebx ecx edx esi,
 	
 threadOfEnemy endp
 	
-deltaOfEnemy proc uses eax ebx ecx edx esi,
+deltaOfEnemyNum proc uses eax ebx ecx edx esi,
 	delta:sdword
 	
 	mov eax, delta
@@ -33,74 +33,90 @@ deltaOfEnemy proc uses eax ebx ecx edx esi,
 nonZero:	
 	ret
 	
-deltaOfEnemy endp
+deltaOfEnemyNum endp
 
 printEnemy proc uses eax ebx ecx edx esi,
 	enemySetPtr:ptr Enemy,
 	num:dword
 	
-	mov eax, 0
-	call setTextColor
-	mov ecx, num
-	mov esi, enemySetPtr
-	
-clean:
-	cmp (Enemy ptr [esi]).isExist, 0
-	je post
-	
-	mov dl, byte ptr(Enemy ptr [esi]).co.x
-	mov dh, byte ptr(Enemy ptr [esi]).co.y	
-	call gotoxy
 	mov eax, 240
 	call setTextColor
-	mov ax, 32
-	call writechar
-	jmp postdo
-post:
-	inc ecx
-postdo:
-	add esi, type Enemy
-	loop clean
-	
 	mov ecx, num
 	mov esi, enemySetPtr
 	
-printLoop:
+L:	
 	cmp (Enemy ptr [esi]).isExist, 0
-	je plPost
-	add byte ptr(Enemy ptr [esi]).co.y, 1
+	je post
 	mov dl, byte ptr (Enemy ptr [esi]).co.x
 	mov dh, byte ptr (Enemy ptr [esi]).co.y
-
 	
+	invoke getPlayerPos
+	cmp al, dl
+	je check
+	jmp clean
+check:
+	cmp bl, dh
+	je hurt
+	jmp clean
+hurt:
+	invoke deltaOfHeart, -1
+	invoke deltaOfEnemyNum, -1
+	mov (Enemy ptr [esi]).isExist, 0
+	call gotoxy
+	mov al, playerIcon
+	call writechar
+	jmp postDo
+	
+clean:
+
+	invoke enemyCollision, esi
+	cmp ebx, 1
+	je postDo
+	
+	call gotoxy
+	mov al, 32
+	call writechar
+move:
+	inc dh
+	mov byte ptr (Enemy ptr [esi]).co.y, dh
+	invoke enemyCollision, esi	
+		
+	invoke getToolPos
+	cmp ax, (Enemy ptr [esi]).co.x
+	jne posCheck
+	cmp bx, (Enemy ptr [esi]).co.y
+	jne posCheck
+	invoke cantUseToolKind
+	
+posCheck:
 	.if dl > Rbound || dl < Lbound
-	mov (enemy ptr [esi]).isExist, 0
-	invoke deltaOfEnemy, -1
-	jmp plPostDo
+	mov (Enemy ptr [esi]).isExist, 0
+	invoke deltaOfHeart, -1
+	invoke deltaOfEnemyNum, -1
+	jmp postDo
 	.endif
 	
 	.if dh > Dbound || dh < Ubound
-	mov (enemy ptr [esi]).isExist, 0
-	invoke deltaOfEnemy, -1
-	jmp plPostDo
+	mov (Enemy ptr [esi]).isExist, 0
+	invoke deltaOfHeart, -1
+	invoke deltaOfEnemyNum, -1
+	jmp postDo
 	.endif
-
-	invoke enemyCollision, esi
-
-print:
+	
 	cmp (Enemy ptr [esi]).isExist, 0
-	je plPost	
-	call Gotoxy
-	mov eax, 240
-	call setTextColor
-	mov al, byte ptr (Enemy ptr [esi]).typ
-	call WriteChar
-	jmp plPostDo
-plPost:
+	je postDo
+	call gotoxy
+	mov al, EnemyIcon
+	call writechar
+	jmp postDo
+post:
 	inc ecx
-plPostDo:
+postDo:
 	add esi, type Enemy
-	loop printLoop
+	dec ecx
+	cmp ecx, 0
+	jne L
+	
 	ret
 	
 printEnemy endp
@@ -140,15 +156,15 @@ check:
 	mov dl, byte ptr (Enemy ptr [edi]).co.x
 	mov dh, byte ptr (Enemy ptr [edi]).co.y
 	call gotoxy
-	mov al, 33
+	mov al, 32
 	call writechar
 	mov dl, byte ptr (bullet ptr [esi]).co.x
 	mov dh, byte ptr (bullet ptr [esi]).co.y
 	call gotoxy
-	mov al, 33
+	mov al, 32
 	call writechar
 	invoke deltaOfBulletNum, -1
-	invoke deltaOfEnemy, -1
+	invoke deltaOfEnemyNum, -1
 	invoke deltaOfScore, 100
 	mov ebx, 1
 	jmp quLa
@@ -160,4 +176,5 @@ over:
 quLa:	
 	ret
 enemyCollision endp
+
 end 

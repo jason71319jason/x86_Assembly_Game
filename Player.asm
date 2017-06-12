@@ -4,7 +4,7 @@ INCLUDE lib.inc
 .data
 
 bulletSet Bullet 1000 DUP(<>)
-bulletCanonNum byte 3
+bulletCanonNum byte 1
 bulletNum sdword 0
 isShoot byte 0
 playerPos coord <38,33>
@@ -44,7 +44,7 @@ setShootState proc USES eax edx ecx,
 	ret
 setShootState endp
 
-setPlayerPos proc USES eax edx ecx,
+setPlayerPos proc USES eax ebx ecx,
 	newX:word,
 	newY:word
 	
@@ -54,6 +54,13 @@ setPlayerPos proc USES eax edx ecx,
 	mov playerPos.y, bx
 	ret
 setPlayerPos endp
+
+getPlayerPos proc 
+	
+	mov ax, playerPos.x
+	mov bx, playerPos.y
+	ret
+getPlayerPos endp
 
 deltaOfbulletNum proc uses eax,
 	delta:sdword
@@ -83,4 +90,25 @@ getBulletNum proc
 	mov eax, bulletNum
 	ret
 getBulletNum endp
+
+getScore proc
+	mov eax, score
+	ret
+getScore endp
+
+getBulletCanonNum proc
+	mov eax, 0
+	mov al, bulletCanonNum
+	ret
+getBulletCanonNum endp
+
+setBulletCanonNum proc uses eax,
+	num:byte
+	mov al, 2
+	cmp al, 3
+	ja exitL
+	mov bulletCanonNum, al
+exitL:
+	ret
+setBulletCanonNum endp
 end

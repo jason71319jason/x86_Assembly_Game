@@ -4,6 +4,7 @@ ExitState	EQU 0
 StartState 	EQU 1
 RuleState	EQU 2
 GameState	EQU 3
+FinishState EQU 5
 right 		EQU 'd'
 left 		EQU 'a'
 up 			EQU 'w'
@@ -12,14 +13,14 @@ shoot 		EQU 'k'
 Rbound 		EQU 76
 Lbound 		EQU 3
 Ubound 		EQU 5
-Dbound 		EQU 34
-playerIcon 	EQU 126
+Dbound 		EQU 33
+playerIcon 	EQU '^'
 bulletIcon 	EQU 111
 threeBulletState EQU 4 
+EnemyIcon	EQU 64
 
 Enemy struct
 	co Coord <?,?>
-	typ byte 64
 	isExist byte 0
 Enemy ends
 
@@ -37,13 +38,15 @@ Bullet struct
 	isExist byte 0
 Bullet ends
 
+getPlayerPos proto,
+
 printEnemy proto, enemySetPtr: ptr Enemy, num:dword
 
 threadOfEnemy proto
 
 strategyProduct proto, enemySetPtr:ptr Enemy, num:dword, start:byte
 
-deltaOfEnemy proto, delta:sdword
+deltaOfEnemyNum proto, delta:sdword
 
 setOutputHandle proto, outputHandle:dword
 
@@ -73,6 +76,8 @@ printHeart proto,
 
 printBlood proto,
 
+deltaOfHeart proto, delta:sdword
+
 gameInit proto,
 
 deltaOfbulletNum proto, delta:sdword
@@ -93,4 +98,24 @@ getBulletSet proto
 
 getBulletNum proto
 
-printWave proto
+printLevel proto
+
+getScore proto
+
+printScore proto
+
+printLevelNum proto
+
+setBulletCanonNum proto, num:byte
+
+getBulletCanonNum proto,
+
+setEnemyCall proto, num:dword
+
+toolProduct proto
+
+toolUse proto
+
+getToolPos proto
+
+cantUseToolKind proto

@@ -8,6 +8,8 @@ BulletPrint proc uses eax ebx ecx edx esi,
 	bulletNum:dword,
 	playerPosi:coord
 	
+	mov eax, 240
+	call setTextColor
 	mov ecx, bulletNum
 	mov esi, bulletSetPtr
 L:	
@@ -27,6 +29,7 @@ clean:
 	invoke bulletCollision, esi
 	cmp ebx, 1
 	je postDo
+	
 	call gotoxy
 	mov al, 32
 	call writechar
@@ -36,6 +39,15 @@ delta:
 	mov byte ptr (bullet ptr [esi]).co.x, dl
 	mov byte ptr (bullet ptr [esi]).co.y, dh
 	
+		
+	invoke getToolPos
+	cmp ax, (bullet ptr [esi]).co.x
+	jne posCheck
+	cmp bx, (bullet ptr [esi]).co.x
+	jne posCheck
+	invoke cantUseToolKind
+	
+posCheck:
 	.if dl > Rbound || dl < Lbound
 	mov (bullet ptr [esi]).isExist, 0
 	invoke deltaOfBulletNum, -1
@@ -92,16 +104,16 @@ check:
 	mov dl, byte ptr (bullet ptr [edi]).co.x
 	mov dh, byte ptr (bullet ptr [edi]).co.y
 	call gotoxy
-	mov al, 42
+	mov al, 32
 	call writechar
 	mov dl, byte ptr (Enemy ptr [edi]).co.x
 	mov dh, byte ptr (Enemy ptr [edi]).co.y
 	call gotoxy
-	mov al, 42
+	mov al, 32
 	call writechar
 
 	invoke deltaOfBulletNum, -1
-	invoke deltaOfEnemy, -1
+	invoke deltaOfEnemyNum, -1
 	invoke deltaOfScore, 100
 	mov ebx, 1
 	jmp quLa
